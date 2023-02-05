@@ -1,12 +1,19 @@
 const generate = document.getElementById('generate');
 
+let gameover = false
+
+
 generate.addEventListener(
     "click",
     function(){
-        
-        const grid = document.getElementById('grid');
+
+        gameover = false;
         
         let quantity;
+        
+        let square;
+        
+        const grid = document.getElementById('grid');
         
         grid.innerHTML="";
         
@@ -22,8 +29,6 @@ generate.addEventListener(
 
             quantity = 40;
         }
-
-        let square;
 
         for(let i = 0; i < quantity; i++) {
             
@@ -49,24 +54,31 @@ function generatesquare (square, i, quantity) {
             
     square.innerHTML = i + 1;
 
+    
     square.addEventListener(
         "click",
         function(){
             
-            if (includes (quantity, i)) {
+            if (!gameover) {
+                
+                if (bomb(quantity, i)) {
+    
+                    this.classList.add("bomb");
 
-                this.classList.add("bomb");
-            }else{
-
-                this.classList.toggle("active");
-            }
-        } 
+                    alert("Hai totalizzato "+ document.querySelectorAll(".square.active").length +" punti");
+    
+                    gameover = true;
+                }else{
+                    this.classList.toggle("active");
+                }
+            } 
+        }
     )
     
     return square;
 }
 
-function includes (quantity, number) {
+function bomb (quantity, number) {
 
     const bombearray = [];
         
